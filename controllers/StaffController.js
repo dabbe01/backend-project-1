@@ -1,6 +1,7 @@
 const {InvalidBody} = require('../errors')
 const User = require('../models/staff')
 const employees = require('../database/employees')
+const bcrypt = require('bcrypt')
 
 module.exports = {
   staffMembers(req, res, next) {
@@ -30,6 +31,23 @@ module.exports = {
 me(req,res, next){
   const {user} = req.user
   res.json({user})
-}
+},
+async updatePassword(req, res, next) {
+  const email = req.body.email
+  console.log(email)
+  try {
+      const { newPassword } = req.body
+      console.log(newPassword)
+      if (!email || !newPassword) {
+          throw new InvalidBody()
+      } else {
+          const newPassHash = bcrypt.hashSync(newPassword, 10)
+          const newPass = await User.findOne({ where: { email } })
+          newPass.password = newPassHash
+          await newPass.save()
+          res.send({ msg: "Password updated successfully!" })
+      }
+  } catch (error) { next(error) }
 }
 
+}

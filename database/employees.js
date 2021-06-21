@@ -1,7 +1,7 @@
 const employees = [
     {
         "email": "stabbing.steve@fuskeluring.hack",
-        "password": " grillkorv123"
+        "password": "grillkorv123"
     },
     {
         "email": "murdering.mike@fuskeluring.hack",
